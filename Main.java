@@ -9,7 +9,7 @@ public class Main {
         System.out.println("範例：");
         System.out.println("02085B4F00023F42 18900370");
         System.out.println("02085B4F00025426 S1007388");
-        System.out.println("...");
+        System.out.println("....");
         System.out.println("輸入完成後，請直接輸入一個空行 (按 Enter 兩次) 來結束輸入：");
 
         String line;
