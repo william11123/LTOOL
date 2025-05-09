@@ -1,9 +1,13 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         // Scanner 用於讀取使用者從主控台的輸入
         Scanner inputScanner = new Scanner(System.in);
+        // 用於儲存所有產生的 SQL 陳述式
+        List<String> sqlStatements = new ArrayList<>();
 
         System.out.println("請貼上您的資料 (每行格式為: SN TermNo)。");
         System.out.println("範例：");
@@ -27,10 +31,12 @@ public class Main {
             if (parts.length == 2) {
                 String sn = parts[0];
                 String termNo = parts[1];
-                System.out.println("UPDATE invsndata SET TermNo = '" + termNo + "' where sn = '" + sn + "';");
+                // 將產生的 SQL 陳述式加入到列表中
+                sqlStatements.add("UPDATE invsndata SET TermNo = '" + termNo + "' where sn = '" + sn + "';");
             } else {
                 // 如果某一行格式不正確，可以選擇印出警告或忽略
                 if (!line.trim().isEmpty()) { // 避免對完全是空白的行也報錯
+                    // 您也可以選擇將警告訊息也收集起來，或立即印出
                     System.out.println("警告：輸入行 '" + line + "' 格式不正確，已忽略。正確格式應為 'SN TermNo'");
                 }
             }
@@ -38,6 +44,17 @@ public class Main {
 
         // 關閉 inputScanner
         inputScanner.close();
+
+        // 輸入處理完成後，一次性印出所有 SQL 陳述式
+        if (!sqlStatements.isEmpty()) {
+            System.out.println("\n--- 產生的 SQL 陳述式 ---");
+            for (String sql : sqlStatements) {
+                System.out.println(sql);
+            }
+        } else {
+            System.out.println("沒有有效的資料輸入，未產生任何 SQL 陳述式。");
+        }
+
         System.out.println("資料處理完成。");
     }
 }
