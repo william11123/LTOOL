@@ -2,37 +2,42 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String data = "02085B4F00023F42 18900370\n" +
-                      "02085B4F00025426 S1007388\n" +
-                      "02024C0300043F43 19101078\n" +
-                      "02024C0300043F44 19101079\n" +
-                      "02024C0300043F45 19101080\n" +
-                      "02024C0300043F47 19101082\n" +
-                      "02024C0300043F48 19101083\n" +
-                      "02024C0300043F4A 19101085\n" +
-                      "02024C0300043F4D 19101088\n" +
-                      "02024C0300043F4F 19101092\n" +
-                      "02024C0300043F50 19101093\n" +
-                      "02024C0300043F52 19101094\n" +
-                      "02024C030004404E 19101095\n" +
-                      "02024C0300043F49 19101084\n" +
-                      "02024C0300043F4E 19101089\n" +
-                      "02024C0300014D18 19101076\n" +
-                      "02024C0300043F42 19101077\n" +
-                      "02024C0300043F46 19101081\n" +
-                      "02024C0300043F4B 19101086\n" +
-                      "02024C0300043F4C 19101087";
+        // Scanner 用於讀取使用者從主控台的輸入
+        Scanner inputScanner = new Scanner(System.in);
 
-        Scanner scanner = new Scanner(data);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            String[] parts = line.split(" "); // 將分隔符號從 "\t" 改為 " "
+        System.out.println("請貼上您的資料 (每行格式為: SN TermNo)。");
+        System.out.println("範例：");
+        System.out.println("02085B4F00023F42 18900370");
+        System.out.println("02085B4F00025426 S1007388");
+        System.out.println("...");
+        System.out.println("輸入完成後，請直接輸入一個空行 (按 Enter 兩次) 來結束輸入：");
+
+        String line;
+        // 迴圈讀取每一行輸入，直到使用者輸入空行
+        while (true) {
+            line = inputScanner.nextLine();
+
+            // 如果讀取到空行，表示輸入結束，跳出迴圈
+            if (line.isEmpty()) {
+                break;
+            }
+
+            // 分割每一行的資料
+            String[] parts = line.split(" ");
             if (parts.length == 2) {
                 String sn = parts[0];
                 String termNo = parts[1];
                 System.out.println("UPDATE invsndata SET TermNo = '" + termNo + "' where sn = '" + sn + "';");
+            } else {
+                // 如果某一行格式不正確，可以選擇印出警告或忽略
+                if (!line.trim().isEmpty()) { // 避免對完全是空白的行也報錯
+                    System.out.println("警告：輸入行 '" + line + "' 格式不正確，已忽略。正確格式應為 'SN TermNo'");
+                }
             }
         }
-        scanner.close();
+
+        // 關閉 inputScanner
+        inputScanner.close();
+        System.out.println("資料處理完成。");
     }
 }
